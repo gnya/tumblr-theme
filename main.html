@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <title>{Title}{block:PostSummary} &mdash; {PostSummary}{/block:PostSummary}</title>
+
+    <!-- Tumblrのオプション -->
+    <meta name="if:Show Reaction Buttons" content="1">
+
+    <meta name="color:Background Start" content="#244f55">
+    <meta name="color:Background End" content="#243455">
+    <meta name="color:Background Post" content="#552624">
+
+    <meta name="color:Icon Hover" content="#dfdfdf">
+    <meta name="color:Icon Liked" content="#ea5c4a">
+
+    <meta name="text:Bluesky URL" content="https://bsky.app/profile/gnya.bsky.social">
+    <meta name="text:Github URL" content="https://github.com/gnya">
+    <meta name="text:Instagram URL" content="https://www.instagram.com/gnya_a">
+    <meta name="text:Twitter URL" content="https://twitter.com/gnya_a">
+    <meta name="text:Youtube URL" content="https://www.youtube.com/@gnya">
+
+    <!-- スタイル -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@latest/destyle.css">
+    <style>
+      :root {
+        /* 現在のページに関する情報 */
+        --theme-total-pages: {TotalPages};
+        --theme-current-page: {CurrentPage};
+        --theme-is-index-page: 0;{block:IndexPage}--theme-is-index-page: 1;{/block:IndexPage}
+        /* このテーマの設定色 */
+        --theme-color-background-start: {color:Background Start};
+        --theme-color-background-end: {color:Background End};
+        --theme-color-background-post: {color:Background Post};
+        --theme-color-icon-hover: {color:Icon Hover};
+        --theme-color-icon-liked: {color:Icon Liked};
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gnya/tumblr-theme@latest/style.css">
+
+    <!-- Google Fontsの読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap">
+
+    <!-- Font Awesomeの読み込み -->
+    <script src="https://kit.fontawesome.com/bb90ba1ae8.js" crossorigin></script>
+
+    <!-- アイコン周りの設定 -->
+    <link rel="shortcut icon" href="{Favicon}">
+    <link rel="apple-touch-icon" href="{PortraitURL-128}">
+
+    <!-- OGP周りの設定 -->
+    <meta name="image:OGP Image" content="">
+    <meta property="og:title" content="{Title}">
+    <meta property="og:url" content="{BlogURL}">
+    <meta property="og:image" content="{image:OGP Image}">
+    <meta name="twitter:card", content="summary">
+
+    <!-- 翻訳のポップアップを表示させないようにする -->
+    <meta name="google" content="notranslate">
+
+    <!-- コピーライトの年号を電話番号として認識させないようにする -->
+    <meta name="format-detection" content="telephone=no">
+  </head>
+
+  <body>
+    <div class="site-wrapper">
+      <div class="header">
+        <div class="portrait header__portrait">
+          <a href="/" class="portrait__link">
+            <img src="{PortraitURL-128}" class="portrait__image">
+          </a>
+        </div>
+
+        {block:HomePage}
+        <div class="header__name">{Title}</div>
+        <div class="header__description">{Description}</div>
+        
+        <ul class="social-links header__social">
+          <li class="social-links__item">
+            <a href="{text:Bluesky URL}" class="social-links__link">
+              <!-- Blueskyのアイコンが大きいのでスケールさせます -->
+              <i class="fa-brands fa-bluesky" style="transform: scale(0.92)"></i>
+            </a>
+          </li>
+
+          <li class="social-links__item">
+            <a href="{text:Github URL}" class="social-links__link">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+
+          <li class="social-links__item">
+            <a href="{text:Instagram URL}" class="social-links__link">
+              <!-- Instagramのアイコンが小さいのでスケールさせます -->
+              <i class="fa-brands fa-instagram" style="transform: scale(1.10)"></i>
+            </a>
+          </li class="social-links__item">
+
+          <li class="social-links__item">
+            <a href="{text:Twitter URL}" class="social-links__link">
+              <i class="fa-brands fa-twitter"></i>
+            </a>
+          </li>
+
+          <li class="social-links__item">
+            <a href="{text:Youtube URL}" class="social-links__link">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+          </li>
+        </ul>
+        {/block:HomePage}
+
+        {block:TagPage}
+        <div class="header__tag">#{Tag}</div>
+        {/block:TagPage}
+
+        {block:PermalinkPagination}
+        <ul class="nav-posts header__nav-posts">
+          {block:NextPost}
+          <li class="nav-posts__item">
+            <a href="{NextPost}" class="nav-posts__link">
+              <i class="fa-solid fa-caret-left"></i>
+            </a>
+          </li>
+          {/block:NextPost}
+
+          {block:PreviousPost} 
+          <li class="nav-posts__item">
+            <a href="{PreviousPost}" class="nav-posts__link">
+              <i class="fa-solid fa-caret-right"></i>
+            </a>
+          </li>
+          {/block:PreviousPost}
+        </ul>
+        </nav>
+        {/block:PermalinkPagination}
+      </div>
+
+      <div class="posts">
+        {block:Posts}
+        <div class="post posts__post" id="{PostID}">
+          <div class="media post__media">
+            <div class="media__dummy"></div>
+          </div>
+
+          <div class="post__footer">
+            <div class="caption post__caption"></div>
+
+            {block:IfShowReactionButtons}
+            <div class="reaction-buttons post__reaction-buttons">
+              <div class="reaction-buttons__button">
+                {LikeButton size="16"}
+                <div class="reaction-buttons__button--overwrite">
+                  <i class="fa-solid fa-heart"></i>
+                </div>
+              </div>
+
+              <div class="reaction-buttons__button">
+                {ReblogButton size="16"}
+                <div class="reaction-buttons__button--overwrite">
+                  <i class="fa-solid fa-rotate"></i>
+                </div>
+              </div>
+            </div>
+            {/block:IfShowReactionButtons}
+          </div>
+
+          <div class="post__meta">
+            {block:HasTags}
+            <ul class="tags post__tags">
+              {block:Tags}
+              <li class="tags__item">
+                <a href="{TagURL}" class="tags__link">#{Tag}</a>
+              </li>
+              {/block:Tags}
+            </ul>
+            {/block:HasTags}
+
+            {block:Date}
+            <div class="post__date">{DayOfMonth}.{MonthNumber}.{Year}</div>
+            {/block:Date}
+          </div>
+        </div>
+        {/block:Posts}
+      </div>
+
+      <div class="footer">
+        {block:Pagination}
+        <ul class="nav-pages footer__nav-pages">
+          {block:PreviousPage}
+          <li class="nav-pages__item">
+            <a href="{PreviousPage}" class="nav-pages__link nav-pages__link--previous-page">
+              <i class="fa-solid fa-caret-left"></i>
+            </a>
+          </li>
+          {/block:PreviousPage}
+
+          {block:JumpPagination length="9"}
+          {block:CurrentPage}
+          <li class="nav-pages__item">
+            <a href="{URL}" class="nav-pages__link nav-pages__link--current-page">
+              <i class="fa-solid fa-circle"></i>
+            </a>
+          </li>
+          {/block:CurrentPage}
+
+          {block:JumpPage}
+          <li class="nav-pages__item">
+            <a href="{URL}" class="nav-pages__link nav-pages__link--jump-page" style="--theme-jump-page: {PageNumber}">
+              <i class="fa-solid fa-circle"></i>
+            </a>
+          </li>
+          {/block:JumpPage}
+          {/block:JumpPagination}
+
+          {block:NextPage}
+          <li class="nav-pages__item">
+            <a href="{NextPage}" class="nav-pages__link nav-pages__link--next-page">
+              <i class="fa-solid fa-caret-right"></i>
+            </a>
+          </li>
+          {/block:NextPage}
+        </ul>
+        </nav>
+        {/block:Pagination}
+
+        <p class="footer__copyright">© {CopyrightYears} gnya - Powered by Tumblr</p>
+      </div>
+    </div>
+
+    <!-- ページの描画に関するスクリプト -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gnya/tumblr-theme@latest/npf.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gnya/tumblr-theme@latest/theme.js"></script>
+    <script>
+      // 投稿の実体をhtmlに追加する
+      {block:Posts}
+      pushPost('{PostID}', '{Permalink}', {NPF});
+      {/block:Posts}
+      drawPosts();
+
+      // テーマを初期化する
+      initTumblrTheme();
+    </script>
+  </body>
+</html>

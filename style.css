@@ -1,0 +1,352 @@
+:root {
+  --theme-width-rate: 1.0;
+}
+
+/* レスポンシブ */
+@media 
+screen and (max-width: 600px) and (orientation: portrait),
+screen and (max-height: 600px) and (orientation: landscape) {
+  :root {
+    --theme-width-rate: 0.66;
+  }
+}
+
+@media
+screen and (max-width: 400px) and (orientation: portrait),
+screen and (max-height: 400px) and (orientation: landscape) {
+  :root {
+    --theme-width-rate: 0.56;
+  }
+}
+
+:root {
+  --theme-wrapper-padding: calc(20px * var(--theme-width-rate));
+  --theme-media-width: calc(500px * var(--theme-width-rate));
+  --theme-media-border-radius: calc(14px * var(--theme-width-rate));
+  --theme-header-margin: calc(40px + 30px * var(--theme-width-rate));
+  --theme-post-margin: calc(90px * var(--theme-width-rate));
+  --theme-post-footer-margin: calc(20px * var(--theme-width-rate));
+  --theme-post-meta-margin: calc(12px * var(--theme-width-rate));
+  --theme-footer-margin: calc(90px * var(--theme-width-rate));
+  --theme-footer-copyright-margin: calc(80px * var(--theme-width-rate));
+  --theme-wrapper-width: calc(var(--theme-media-width) + var(--theme-wrapper-padding) * 2);
+}
+
+html {
+  background-color: color-mix(
+    /* 動的に背景色を変更します */
+    in srgb,
+    color-mix(
+      in srgb,
+      var(--theme-color-background-end)
+      calc(100% * (var(--theme-current-page) - 1) / max(var(--theme-total-pages) - 1, 1)),
+      var(--theme-color-background-start)
+    )
+    calc(100% * var(--theme-is-index-page)),
+    var(--theme-color-background-post)
+  );
+  transition: background-color 500ms 250ms ease; /* ページ遷移時に背景色をアニメーションさせる */
+}
+
+body {
+  /* フォントの設定 */
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  line-height: 1.4em;
+  text-decoration: none; /* リンクの下線を消す */
+  -webkit-font-smoothing: antialiased; /* アンチエイリアスを設定する */
+  -moz-osx-font-smoothing: grayscale; /* アンチエイリアスを設定する */
+  user-select: none; /* 選択不可にする */
+  -webkit-user-select: none; /* 選択不可にする */
+  -moz-user-select: none; /* 選択不可にする */
+  -webkit-tap-highlight-color: transparent; /* タップした際の強調色を消す */
+}
+
+a {
+  transition: color 300ms ease;
+}
+
+a:hover {
+  color: var(--theme-color-icon-hover) !important;
+}
+
+.site-wrapper {
+  /* ページ全体を中央揃えします */
+  width: var(--theme-wrapper-width);
+  padding: 0px var(--theme-wrapper-padding); /* 横幅を縮める際の見た目を自然にする */
+  margin: 0px auto;
+  /* フォントの読み込みが終わるまで非表示にする */
+  opacity: 0;
+  transition: opacity 500ms 250ms ease;
+}
+
+.header {
+  margin-top: var(--theme-header-margin);
+  text-align: center;
+}
+
+.portrait__image {
+  border-radius: 64px;
+  box-shadow: 0px 1px 10px rgba(25, 25, 25, 0.15);
+  transition: filter 300ms ease;
+}
+
+.portrait__image:hover {
+  filter: sepia(50%);
+}
+
+.header__name {
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin-top: 30px;
+}
+
+.header__description {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.header__social {
+  margin-top: 20px;
+}
+
+.header__tag {
+  font-weight: 700;
+  margin-top: 30px;
+}
+
+.header__nav-posts {
+  margin-top: 30px;
+}
+
+.social-links, .nav-posts, .nav-pages {
+  list-style: none;
+  display: flex; /* 横に並べる */
+  justify-content: center; /* センタリング */
+}
+
+.social-links__link, .nav-posts__link, .nav-pages__link {
+  width: 24px;
+  font-size: 16px;
+  display: flex; /* inlineではなくflexを使う */
+  justify-content: center; /* センタリング */
+}
+
+.post {
+  margin-top: var(--theme-post-margin);
+}
+
+.media {
+  width: var(--theme-media-width);
+  height: var(--theme-media-width);
+  border-radius: var(--theme-media-border-radius); /* 角丸 */
+  overflow: hidden; /* はみ出た部分は隠す */
+  position: relative; /* 要素を重ねる */
+}
+
+.media__dummy {
+  /* 親のサイズを厳守させる */
+  width: 100%;
+  height: 100%;
+  position: absolute; /* 要素を重ねる */
+  z-index: -1; /* 背面に表示 */
+  background-color: rgba(25, 25, 25, 0.05);
+  box-shadow: inset 0px 1px 10px rgba(25, 25, 25, 0.15);
+}
+
+.media__image, .media__video {
+  /* 親のサイズを厳守させる */
+  width: 100%;
+  height: 100%;
+  position: absolute; /* 要素を重ねる */
+  z-index: 0; /* 前面に表示 */
+  box-shadow: 0px 1px 10px rgba(25, 25, 25, 0.15);
+}
+
+.media img, .media video, .media iframe {
+  /* 親のサイズを厳守させる */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像の縦横比を維持する */
+  position: absolute; /* オーバーレイする */
+  border-radius: inherit; /* 角丸を継承させる(スマホ向け) */
+  /* メディアの読み込みが終わるまで非表示にする */
+  opacity: 0;
+  transition: opacity 1500ms ease;
+}
+
+/* video要素のアイコンの表示エリア */
+.video-overlay {
+  width: 100%;
+  height: 100%;
+  font-size: 48px;
+  cursor: pointer;
+  position: absolute; /* オーバーレイする */
+
+  /* アイコンをセンタリングする */
+  display: flex;
+  align-items: center; /* 垂直方向 */
+  justify-content: center; /* 水平方向 */
+
+  color: var(--theme-color-icon-hover);
+  filter: brightness(200%);
+  transition: opacity 300ms ease;
+}
+
+/* video要素のアイコンの表示エリア(ホバー時) */
+@media (any-hover: hover) {
+  .video-overlay:hover {
+    opacity: 1 !important;
+  }
+}
+
+/* video要素のアイコンの表示エリア(アクティブ時) */
+@media (any-pointer: coarse) {
+  .video-overlay:active {
+    opacity: 1 !important;
+  }
+}
+
+.post__footer {
+  margin-top: var(--theme-post-footer-margin);
+  /* この中の要素を左右に寄せる */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post__caption {
+  width: calc(var(--theme-media-width) - 90px);
+}
+
+.caption__text {
+  font-weight: 700;
+  /* 文字を折り返さず省略する */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reaction-buttons {
+  display: flex; /* 横に並べる */
+}
+
+.reaction-buttons__button {
+  width: 20px;
+  height: 16px;
+  cursor: pointer;
+  position: relative; /* アイコンに重ねる */
+  margin-left: 12px;
+}
+
+/* Tumblrによって生成されるリアクションボタン */
+.like_button, .reblog_button {
+  width: 100%;
+  height: 100%;
+  position: absolute; /* アイコンに重ねる */
+  opacity: 0; /* 元のアイコンを隠す */
+  z-index: 0; /* 透明なボタンを前面に表示する */
+}
+
+.reaction-buttons__button--overwrite {
+  width: 100%;
+  height: 100%;
+  position: absolute; /* アイコンに重ねる */
+  z-index: -1; /* 透明なボタンの背面に表示する */
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 300ms ease;
+}
+
+.like_button:hover + .reaction-buttons__button--overwrite,
+.reblog_button:hover + .reaction-buttons__button--overwrite {
+  color: var(--theme-color-icon-hover);
+}
+
+.like_button.liked + .reaction-buttons__button--overwrite {
+  color: var(--theme-color-icon-liked);
+}
+
+.post__meta {
+  margin-top: var(--theme-post-meta-margin);
+  /* この中の要素を左右に寄せる */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post__tags {
+  width: calc(var(--theme-media-width) - 90px);
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 13px;
+}
+
+.tags {
+  list-style: none;
+  display: flex; /* 横に並べる */
+  justify-content: flex-start; /* 左に寄せる */
+}
+
+.tags__item {
+  margin-right: 10px;
+  /* 文字を折り返さず省略する */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post__date {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 13px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: var(--theme-footer-margin);
+  margin-bottom: 25px;
+}
+
+.nav-pages__link--jump-page {
+  color: color-mix(
+    /* 動的にアイコン色を変更します */
+    in srgb,
+    var(--theme-color-background-end)
+    calc(100% * (var(--theme-jump-page) - 1) / max(var(--theme-total-pages) - 1, 1)),
+    var(--theme-color-background-start)
+  );
+  filter: brightness(200%);
+}
+
+.footer__copyright {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 13px;
+  margin-top: var(--theme-footer-copyright-margin);
+}
+
+/* スクロールバーの設定 */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
+  opacity: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: solid 3px transparent;
+  box-shadow: inset 0px 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Tumblrがページ全体を押し下げるのを防ぐ */
+.tmblr-iframe-pushdown {
+  padding-top: 0px !important;
+}
+
+/* Tumblrの上の表示を消す */
+.tmblr-iframe {
+  display: none! important;
+}
